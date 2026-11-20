@@ -1,0 +1,11 @@
+{
+  "name": "@superapp/bff-sdui-service",
+  "version": "1.0.0",
+  "description": "Backend For Frontend (BFF) & Server-Driven UI Service",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  }
+}

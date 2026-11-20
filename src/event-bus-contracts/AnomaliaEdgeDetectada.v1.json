@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.banco.corp/events/anomalia-edge-detectada.v1.json",
+  "title": "AnomaliaEdgeDetectada",
+  "description": "Evento de segurança gerado quando a camada de Edge AI detecta discrepância biométrica comportamental ou risco atípico na telemetria do dispositivo.",
+  "type": "object",
+  "required": ["specversion", "id", "source", "type", "time", "datacontenttype", "data"],
+  "properties": {
+    "specversion": { "type": "string", "const": "1.0" },
+    "id": { "type": "string", "format": "uuid" },
+    "source": { "type": "string", "format": "uri", "example": "/mobile/edge-ai/ios" },
+    "type": { "type": "string", "const": "br.com.banco.seguranca.anomalia_edge.v1" },
+    "time": { "type": "string", "format": "date-time" },
+    "datacontenttype": { "type": "string", "const": "application/json" },
+    "data": {
+      "type": "object",
+      "required": ["id_conta", "device_risk_score", "fatores_risco", "modelo_versao", "acao_recomendada"],
+      "properties": {
+        "id_conta": { "type": "string" },
+        "device_risk_score": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "fatores_risco": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["KEYSTROKE_CADENCE_ABNORMAL", "DEVICE_ORIENTATION_ANOMALY", "RAPID_PASTE_DETECTED", "ROOT_JAILBREAK_SUSPECTED"] }
+        },
+        "modelo_versao": { "type": "string", "example": "edge-risk-v2.1-int8" },
+        "acao_recomendada": { "type": "string", "enum": ["STEP_UP_BIOMETRIA", "BLOQUEIO_TEMPORARIO", "SOLICITAR_CHALLENGE"] }
+      }
+    }
+  }
+}

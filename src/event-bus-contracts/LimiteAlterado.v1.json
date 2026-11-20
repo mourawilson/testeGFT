@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.banco.corp/events/limite-alterado.v1.json",
+  "title": "LimiteAlterado",
+  "description": "Evento emitido quando ocorre atualização do limite total, bloqueio preventivo ou ajuste emergencial de contrato.",
+  "type": "object",
+  "required": ["specversion", "id", "source", "type", "time", "datacontenttype", "data"],
+  "properties": {
+    "specversion": { "type": "string", "const": "1.0" },
+    "id": { "type": "string", "format": "uuid" },
+    "source": { "type": "string", "format": "uri", "example": "/core/limites/us-east-1" },
+    "type": { "type": "string", "const": "br.com.banco.limite.alterado.v1" },
+    "time": { "type": "string", "format": "date-time" },
+    "datacontenttype": { "type": "string", "const": "application/json" },
+    "correlation_id": { "type": "string", "format": "uuid" },
+    "traceparent": { "type": "string" },
+    "data": {
+      "type": "object",
+      "required": ["id_contrato", "id_conta", "limite_anterior", "novo_limite", "motivo", "origem_solicitacao"],
+      "properties": {
+        "id_contrato": { "type": "string" },
+        "id_conta": { "type": "string" },
+        "limite_anterior": { "type": "number", "minimum": 0 },
+        "novo_limite": { "type": "number", "minimum": 0 },
+        "motivo": { "type": "string", "enum": ["AJUSTE_EMERGENCIAL_AGENTE", "REVISAO_RISCO", "SOLICITACAO_CLIENTE", "BLOQUEIO_PREVENTIVO"] },
+        "origem_solicitacao": { "type": "string", "enum": ["ASSISTENTE_IA", "OPERADOR_HUMANO", "MOTOR_POLITICA"] }
+      }
+    }
+  }
+}

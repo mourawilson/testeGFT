@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.banco.corp/events/transacao-autorizada.v1.json",
+  "title": "TransacaoAutorizada",
+  "description": "Evento de domínio publicado imediatamente após a autorização síncrona de uma transação financeira no core banking, em conformidade com a especificação CloudEvents 1.0.",
+  "type": "object",
+  "required": [
+    "specversion",
+    "id",
+    "source",
+    "type",
+    "time",
+    "datacontenttype",
+    "data"
+  ],
+  "properties": {
+    "specversion": {
+      "type": "string",
+      "const": "1.0",
+      "description": "Versão da especificação CloudEvents."
+    },
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Identificador único global do evento para fins de deduplicação e garantia de entrega at-least-once."
+    },
+    "source": {
+      "type": "string",
+      "format": "uri",
+      "example": "/core/autorizacao/us-east-1/cluster-01",
+      "description": "Identificador URI do serviço emissor do evento."
+    },
+    "type": {
+      "type": "string",
+      "const": "br.com.banco.transacao.autorizada.v1",
+      "description": "Tipo canônico do evento de domínio."
+    },
+    "time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp ISO 8601 UTC do momento exato do fato de negócio."
+    },
+    "datacontenttype": {
+      "type": "string",
+      "const": "application/json"
+    },
+    "correlation_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Identificador de correlação para rastreio ponta-a-ponta em logs distribuídos."
+    },
+    "traceparent": {
+      "type": "string",
+      "example": "00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01",
+      "description": "Contexto de Distributed Tracing compatível com padrão W3C Trace Context."
+    },
+    "data": {
+      "type": "object",
+      "required": [
+        "id_autorizacao",
+        "id_contrato",
+        "id_conta",
+        "valor",
+        "moeda",
+        "tipo_operacao",
+        "saldo_reservado",
+        "limite_remanescente",
+        "canal"
+      ],
+      "properties": {
+        "id_autorizacao": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Identificador único gerado na autorização da transação."
+        },
+        "id_contrato": {
+          "type": "string",
+          "description": "Identificador do contrato de crédito ou conta afetada."
+        },
+        "id_conta": {
+          "type": "string",
+          "description": "Número da conta corrente do titular."
+        },
+        "valor": {
+          "type": "number",
+          "minimum": 0.01,
+          "description": "Valor monetário da transação em formato decimal."
+        },
+        "moeda": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$",
+          "default": "BRL",
+          "description": "Código ISO 4217 da moeda."
+        },
+        "tipo_operacao": {
+          "type": "string",
+          "enum": ["DEBITO", "CREDITO", "RESERVA", "ESTORNO"]
+        },
+        "saldo_reservado": {
+          "type": "number",
+          "minimum": 0.00,
+          "description": "Montante reservado no contrato após a operação."
+        },
+        "limite_remanescente": {
+          "type": "number",
+          "description": "Limite disponível remanescente para novas transações."
+        },
+        "id_estabelecimento": {
+          "type": "string",
+          "description": "Identificador ou nome fantasia do estabelecimento comercial recebedor."
+        },
+        "canal": {
+          "type": "string",
+          "enum": ["SUPERAPP_MOBILE", "CARTAO_PRESENCIAL", "ECOMMERCE", "PIX_GATEWAY"]
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

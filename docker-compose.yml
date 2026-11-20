@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  bff-sdui-service:
+    build:
+      context: .
+      dockerfile: ./src/bff-sdui-service/Dockerfile
+    container_name: bff-sdui-service
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - AI_ORCHESTRATOR_URL=http://ai-orchestrator:3002
+    networks:
+      - superapp-net
+    depends_on:
+      - ai-orchestrator
+
+  ai-orchestrator:
+    build:
+      context: .
+      dockerfile: ./src/ai-orchestrator/Dockerfile
+    container_name: ai-orchestrator
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+    networks:
+      - superapp-net
+
+  mobile-sdui-preview:
+    build:
+      context: .
+      dockerfile: ./src/mobile-sdui-preview/Dockerfile
+    container_name: mobile-sdui-preview
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+    networks:
+      - superapp-net
+    depends_on:
+      - bff-sdui-service
+
+networks:
+  superapp-net:
+    driver: bridge

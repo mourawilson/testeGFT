@@ -1,0 +1,14 @@
+{
+  "name": "superapp-financeiro-architect-suite",
+  "version": "1.0.0",
+  "description": "SuperApp Financeiro Modular com Server-Driven UI e Assistente Agêntico Híbrido",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node start-all.js",
+    "start:bff": "node src/bff-sdui-service/server.js",
+    "start:ai": "node src/ai-orchestrator/server.js",
+    "start:preview": "node src/mobile-sdui-preview/server.js",
+    "test:edge": "node src/edge-ai-simulator/cli.js"
+  }
+}

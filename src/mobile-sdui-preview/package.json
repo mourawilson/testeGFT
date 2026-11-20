@@ -1,0 +1,10 @@
+{
+  "name": "@superapp/mobile-sdui-preview",
+  "version": "1.0.0",
+  "description": "SuperApp Mobile Shell & SDUI Interactive Preview with Edge/Cloud AI",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.banco.corp/events/insight-agente-gerado.v1.json",
+  "title": "InsightAgenteGerado",
+  "description": "Evento publicado quando o orquestrador de IA sintetiza uma recomendação financeira ou alerta proativo para o cliente.",
+  "type": "object",
+  "required": ["specversion", "id", "source", "type", "time", "datacontenttype", "data"],
+  "properties": {
+    "specversion": { "type": "string", "const": "1.0" },
+    "id": { "type": "string", "format": "uuid" },
+    "source": { "type": "string", "format": "uri", "example": "/ai/orchestrator/langchain" },
+    "type": { "type": "string", "const": "br.com.banco.ai.insight.gerado.v1" },
+    "time": { "type": "string", "format": "date-time" },
+    "datacontenttype": { "type": "string", "const": "application/json" },
+    "data": {
+      "type": "object",
+      "required": ["id_conta", "categoria_insight", "resumo", "sdui_component_target"],
+      "properties": {
+        "id_conta": { "type": "string" },
+        "categoria_insight": { "type": "string", "enum": ["LIMITE_CRITICO", "ECONOMIA_GASTOS", "PROTECAO_FRAUDE", "OPORTUNIDADE_INVESTIMENTO"] },
+        "resumo": { "type": "string" },
+        "sdui_component_target": { "type": "string", "example": "SmartInsightBanner" },
+        "acao_proposta": { "type": "string" }
+      }
+    }
+  }
+}
